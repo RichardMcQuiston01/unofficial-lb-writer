@@ -1,0 +1,51 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for npm provenance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - run: bun install --frozen-lockfile
+
+      # A release tagged v0.1.0 must ship package.json 0.1.0 — and this must
+      # also hold for a manual workflow_dispatch run, or it could publish an
+      # untagged version. Runs unconditionally: for workflow_dispatch off a
+      # branch, GITHUB_REF_NAME won't start with "v" and will fail closed.
+      - name: Check ref matches package.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::Ref '${GITHUB_REF_NAME}' does not match package.json version '${pkg}'"
+            exit 1
+          fi
+
+      # Build and test without the publish token so they can't read it.
+      - run: bun run build && bun run test
+
+      # prepublishOnly would otherwise re-run build + test with
+      # NODE_AUTH_TOKEN in the environment; --ignore-scripts skips it since
+      # the previous step already did the job.
+      - run: npm publish --access public --provenance --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
