@@ -1,0 +1,38 @@
+{
+  "name": "@richardmcquiston01/unofficial-lb-writer",
+  "version": "0.1.0",
+  "description": "Unofficial framework-agnostic TypeScript library for writing LightBurn-compatible (.lbrn2) project files.",
+  "license": "Apache-2.0",
+  "author": "Richard McQuiston <richard.mcquiston01@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RichardMcQuiston01/unofficial-lb-writer.git"
+  },
+  "homepage": "https://github.com/RichardMcQuiston01/unofficial-lb-writer#readme",
+  "bugs": "https://github.com/RichardMcQuiston01/unofficial-lb-writer/issues",
+  "keywords": ["lightburn", "lbrn2", "laser", "cnc"],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "donate.svg", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "bun run build && bun run test",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "tsup": "^8",
+    "typescript": "^5",
+    "vitest": "^2"
+  }
+}
