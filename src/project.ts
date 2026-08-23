@@ -82,7 +82,7 @@ export function createLbrn2Project(): Lbrn2ProjectBuilder {
           `<name Value="${escapeXml(spec.name ?? 'Image')}"/>\n` +
           `<maxPower Value="${spec.maxPower ?? 20}"/>\n` +
           `<speed Value="${spec.speed ?? 100}"/>\n` +
-          `<ditherMode Value="${spec.ditherMode ?? 'stucki'}"/>\n` +
+          `<ditherMode Value="${escapeXml(spec.ditherMode ?? 'stucki')}"/>\n` +
           '</CutSetting_Img>'
       );
       return index;

@@ -45,6 +45,13 @@ describe('createLbrn2Project', () => {
     expect(xml).toContain('<ditherMode Value="stucki"/>');
   });
 
+  it('escapes a custom ditherMode value', () => {
+    const project = createLbrn2Project();
+    project.addImageCutSetting({ ditherMode: '"><Injected/>' });
+    const xml = project.toXml();
+    expect(xml).toContain('<ditherMode Value="&quot;&gt;&lt;Injected/&gt;"/>');
+  });
+
   it('adds shapes referencing their cut index', () => {
     const project = createLbrn2Project();
     const cutIndex = project.addCutSetting({

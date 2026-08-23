@@ -29,6 +29,12 @@ describe('pathShape', () => {
     expect(xml).toContain('<V vx="30" vy="10"/>');
     expect(xml).toContain('<P T="L" p0="0" p1="1"/>');
   });
+
+  it('rejects an odd-length points array', () => {
+    expect(() => pathShape(0, IDENTITY, [0, 0, 20])).toThrow(
+      'points must contain complete x/y coordinate pairs'
+    );
+  });
 });
 
 describe('textShape', () => {
@@ -82,5 +88,11 @@ describe('bitmapShape', () => {
     expect(xml).toContain('CutIndex="1" W="100" H="50"');
     expect(xml).toContain('Data="PNGDATA"');
     expect(xml).toContain('<XForm>1 0 0 1 50 25</XForm>');
+  });
+
+  it('escapes a Data value that could break out of the attribute', () => {
+    const xml = bitmapShape(0, IDENTITY, 10, 10, '"><Injected/>');
+    expect(xml).toContain('Data="&quot;&gt;&lt;Injected/&gt;"');
+    expect(xml).not.toContain('Data=""><Injected/>"');
   });
 });

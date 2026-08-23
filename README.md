@@ -2,7 +2,7 @@
 
 ## Overview
 
-Unofficial framework agnostic TypeScript NPM package for writing Lightburn compatible files
+Unofficial framework-agnostic TypeScript npm package for writing LightBurn-compatible files
 
 ## Getting Started
 

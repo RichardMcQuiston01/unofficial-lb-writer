@@ -10,6 +10,11 @@ describe('escapeXml', () => {
   it('normalizes literal newlines to &#10;', () => {
     expect(escapeXml('First\nSecond')).toBe('First&#10;Second');
   });
+
+  it('normalizes CRLF and lone CR to &#10;', () => {
+    expect(escapeXml('First\r\nSecond')).toBe('First&#10;Second');
+    expect(escapeXml('First\rSecond')).toBe('First&#10;Second');
+  });
 });
 
 describe('fmt', () => {

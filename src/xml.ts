@@ -12,7 +12,7 @@ export function escapeXml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;')
-    .replace(/\r?\n/g, '&#10;');
+    .replace(/\r\n?|\n/g, '&#10;');
 }
 
 /** Formats a number the way LightBurn expects: no unnecessary precision. */

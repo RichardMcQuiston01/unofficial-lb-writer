@@ -22,7 +22,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "donate.svg", "CHANGELOG.md"],
+  "files": ["dist", "donate.svg", "CHANGELOG.md", "EXAMPLES.md"],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "bun run build && bun run test",

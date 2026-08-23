@@ -50,6 +50,9 @@ export function ellipseShape(
  * is always identity.
  */
 export function pathShape(cutIndex: number, m: Mat, points: number[]): string {
+  if (points.length % 2 !== 0) {
+    throw new Error('points must contain complete x/y coordinate pairs');
+  }
   const vertices: string[] = [];
   const primitives: string[] = [];
   for (let i = 0; i < points.length; i += 2) {
@@ -115,6 +118,6 @@ export function bitmapShape(
       widthMm
     )}" H="${fmt(heightMm)}" Gamma="1" Contrast="0" Brightness="0" ` +
     `EnhanceAmount="0" EnhanceRadius="0" EnhanceDenoise="0" File="" ` +
-    `SourceHash="0" Data="${base64}">${xform(unmirror(m))}</Shape>`
+    `SourceHash="0" Data="${escapeXml(base64)}">${xform(unmirror(m))}</Shape>`
   );
 }
