@@ -15,7 +15,17 @@ Unofficial framework-agnostic TypeScript npm package for writing LightBurn-compa
 
 ```sh
 bun add @richardmcquiston01/unofficial-lb-writer
+# or
+npm install @richardmcquiston01/unofficial-lb-writer
+# or
+pnpm add @richardmcquiston01/unofficial-lb-writer
+# or
+yarn add @richardmcquiston01/unofficial-lb-writer
 ```
+
+Ships dual ESM/CJS builds plus TypeScript `.d.ts` types — no extra
+`@types` package needed, and it works from both `import` and
+`require`.
 
 ### Usage
 
@@ -47,6 +57,23 @@ exported `multiply`/`translation`/`rotation`/`flipYMatrix` helpers.
 ### Examples
 
 See [EXAMPLES.md](./EXAMPLES.md)
+
+## Development
+
+```sh
+git clone https://github.com/RichardMcQuiston01/unofficial-lb-writer.git
+cd unofficial-lb-writer
+bun install
+
+bun run build       # dual ESM/CJS build + .d.ts, via tsup -> dist/
+bun run dev         # build in watch mode
+bun run test        # vitest, *.test.ts colocated with each source file
+bun run typecheck   # tsc --noEmit
+```
+
+Work happens on `dev`, PRs land on `staging` for final testing, then
+`release` before a version bump + tag publishes to npm (see
+`.github/workflows/publish.yml`).
 
 ## License
 
