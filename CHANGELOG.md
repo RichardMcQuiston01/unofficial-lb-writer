@@ -2,8 +2,13 @@
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-09-19
+
 ### Added
 
+- `.github/workflows/publish.yml` now also triggers on pushing a
+  `v*` tag (in addition to a published GitHub release and manual
+  dispatch), so tagging a release is enough to publish to npm.
 - A `prepare` script (`tsup`) so installing this package directly from
   its git URL (before it's published to npm) builds `dist/`
   automatically instead of shipping raw TypeScript source.
