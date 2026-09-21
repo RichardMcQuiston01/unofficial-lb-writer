@@ -25,6 +25,7 @@
   "files": ["dist", "donate.svg", "CHANGELOG.md", "EXAMPLES.md"],
   "scripts": {
     "build": "tsup",
+    "prepare": "tsup",
     "prepublishOnly": "bun run build && bun run test",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
