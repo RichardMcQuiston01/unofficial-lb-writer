@@ -4,6 +4,9 @@
 
 ### Added
 
+- A `prepare` script (`tsup`) so installing this package directly from
+  its git URL (before it's published to npm) builds `dist/`
+  automatically instead of shipping raw TypeScript source.
 - **Read/extract/substitute API** for existing `.lbrn2` files (`src/substitution.ts`):
   `assertLbrn2Format`, `extractLbrn2Tokens`, `renderLbrn2File`, and the
   `Lbrn2Variable` type, mirroring `@richardmcquiston01/unofficial-xcs-writer`'s
