@@ -97,3 +97,35 @@ project.addBitmap(imageIndex, IDENTITY, 100, 50, '...');
 
 const xml = project.toXml();
 ```
+
+## Filling in a template's `{{token}}` placeholders
+
+Reading and substituting into an *existing* `.lbrn2` file (e.g. one built
+with a `{{FirstName}}`-style placeholder in a text shape's `Str`
+attribute) doesn't use the builder at all -- these functions work
+directly on the raw XML string:
+
+```ts
+import {
+  assertLbrn2Format,
+  extractLbrn2Tokens,
+  renderLbrn2File,
+} from '@richardmcquiston01/unofficial-lb-writer';
+
+const xml = await fetch('/templates/name-tag.lbrn2').then((r) => r.text());
+
+assertLbrn2Format(xml); // throws if invalid
+
+const tokens = extractLbrn2Tokens(xml);
+// => ['FirstName', 'LastName']
+
+const output = renderLbrn2File(
+  xml,
+  [
+    { token: 'FirstName', defaultValue: 'Guest' },
+    { token: 'LastName' },
+  ],
+  { FirstName: 'Jane', LastName: 'Smith' }
+);
+// output is the same XML with {{FirstName}} -> 'Jane', {{LastName}} -> 'Smith'
+```

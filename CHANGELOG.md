@@ -7,6 +7,19 @@
 - A `prepare` script (`tsup`) so installing this package directly from
   its git URL (before it's published to npm) builds `dist/`
   automatically instead of shipping raw TypeScript source.
+- **Read/extract/substitute API** for existing `.lbrn2` files (`src/substitution.ts`):
+  `assertLbrn2Format`, `extractLbrn2Tokens`, `renderLbrn2File`, and the
+  `Lbrn2Variable` type, mirroring `@richardmcquiston01/unofficial-xcs-writer`'s
+  `.xcs` functions. This is plain text substitution over the raw XML string
+  (LightBurn re-renders its own fonts, so unlike `.xcs` there's no glyph
+  outline data to regenerate) and `assertLbrn2Format` is a lightweight
+  structural sniff rather than full XML parsing -- this package still has
+  zero runtime dependencies.
+
+## [0.1.0] - 2026-09-19
+
+### Added
+
 - Initial `.lbrn2` (LightBurn) project builder: `createLbrn2Project()`,
   with `addCutSetting`/`addImageCutSetting`, `addRect`/`addEllipse`/
   `addPath`/`addText`/`addBitmap`, and `toXml()`.
