@@ -14,6 +14,7 @@ The package has a working `.lbrn2` (LightBurn) project builder in `src/`:
 - `src/xml.ts` — `escapeXml`, `fmt`, `xform` low-level XML helpers.
 - `src/shapes.ts` — `rectShape`/`ellipseShape`/`pathShape`/`textShape`/`bitmapShape`, each taking a pre-composed `Mat`. `textShape`/`bitmapShape` own LightBurn's "un-mirror when the composed matrix reflects" quirk.
 - `src/project.ts` — `createLbrn2Project()`, a stateful builder: `addCutSetting`/`addImageCutSetting` register settings and return the index shapes should reference (no dedup/reordering — that's the caller's job); `addRect`/`addEllipse`/`addPath`/`addText`/`addBitmap` append shapes; `toXml()` serializes.
+- `src/substitution.ts` — `assertLbrn2Format`/`extractLbrn2Tokens`/`renderLbrn2File`, the read/extract/substitute half of the API (mirroring `@richardmcquiston01/unofficial-xcs-writer`'s `.xcs` functions). Unlike that package, this is plain text substitution over the raw XML string, not structure-aware: LightBurn re-renders its own fonts from stored text, so there's no glyph outline data to regenerate when a token's value changes. `assertLbrn2Format` is a structural sniff (root element is `<LightBurnProject>`), not full XML parsing/validation — this package has zero runtime dependencies and that's deliberate.
 - `src/index.ts` — public exports.
 
 Build via `tsup` (dual ESM/CJS + `.d.ts`), tests via `vitest`, colocated as `*.test.ts` next to each source file. License is Apache-2.0 (matches `LICENSE`).
