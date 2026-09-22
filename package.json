@@ -1,6 +1,6 @@
 {
   "name": "@richardmcquiston01/unofficial-lb-writer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Unofficial framework-agnostic TypeScript library for writing LightBurn-compatible (.lbrn2) project files.",
   "license": "Apache-2.0",
   "author": "Richard McQuiston <richard.mcquiston01@gmail.com>",
