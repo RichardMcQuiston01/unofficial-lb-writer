@@ -4,6 +4,9 @@
 
 ### Added
 
+- A `prepare` script (`tsup`) so installing this package directly from
+  its git URL (before it's published to npm) builds `dist/`
+  automatically instead of shipping raw TypeScript source.
 - Initial `.lbrn2` (LightBurn) project builder: `createLbrn2Project()`,
   with `addCutSetting`/`addImageCutSetting`, `addRect`/`addEllipse`/
   `addPath`/`addText`/`addBitmap`, and `toXml()`.
