@@ -4,8 +4,16 @@
 
 ### Changed
 
-- Rewrote `README.md`: feature summary, API tables for the builder, matrix
-  helpers, and template substitution, plus a development section.
+- Rewrote `README.md` to the standard template: author block, Table of
+  Contents, Back to Top links, and the standard Buy Me a Coffee, License,
+  and Copyright sections.
+- `EXAMPLES.md` now has Back to README links, a menu row, and Back to Top
+  links.
+
+### Added
+
+- `API.md`: reference tables for the project builder, matrix helpers,
+  and template functions, linked from the README.
 
 ## [0.2.0] - 2026-09-22
 

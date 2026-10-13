@@ -1,28 +1,38 @@
 # @richardmcquiston01/unofficial-lb-writer
 
-Unofficial, framework-agnostic TypeScript library for writing
-[LightBurn](https://lightburnsoftware.com/)-compatible `.lbrn2` project files.
+- Author: [Richard McQuiston](mailto:richard.mcquiston@gmail.com)
+- Website: https://richardmcquiston.com/
 
-- **Zero runtime dependencies**
-- **Dual ESM/CJS** build with bundled TypeScript types
-- **Generic, low-level writer** — knows nothing about your app's document
-  model; you map your own types onto its builder API
-- **Template support** — read an existing `.lbrn2` file and fill in
-  `{{token}}` placeholders
+## Table of Contents
 
-> This project is not affiliated with or endorsed by LightBurn Software.
+| [Overview](#overview) | [Getting Started](#getting-started) | [API Reference](#api-reference) | [Development](#development) | [Buy Me a Coffee](#buy-me-a-coffee) | [License](#license) | [Copyright](#copyright) |
 
-## Installation
+## Overview
+
+This is an unofficial TypeScript package that writes LightBurn project files (`.lbrn2`). LightBurn is software for laser cutters and engravers. This project is not tied to or endorsed by LightBurn Software.
+
+The package is a low-level writer. It knows nothing about your app's document model. You map your own data onto its builder. It has no runtime dependencies and works with any framework. It also fills in `{{token}}` placeholders in an existing `.lbrn2` file.
+
+[Back to Top](#table-of-contents)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20 or newer, or Bun 1.1 or newer
+- A TypeScript or JavaScript project that targets ES2022 or newer
+
+### Installation
 
 ```sh
 bun add @richardmcquiston01/unofficial-lb-writer
-# or
-npm install @richardmcquiston01/unofficial-lb-writer
 ```
 
-Requires Node.js 20+ or Bun 1.1+, and a project targeting ES2022+.
+You can also use `npm install @richardmcquiston01/unofficial-lb-writer`.
 
-## Quick start
+### Usage
+
+Create a project, add a cut setting, add a shape, and write the XML.
 
 ```ts
 import { createLbrn2Project, IDENTITY } from '@richardmcquiston01/unofficial-lb-writer';
@@ -41,57 +51,11 @@ project.addRect(cutIndex, IDENTITY, 20, 10, 0);
 const lbrn2Xml: string = project.toXml();
 ```
 
-Save `lbrn2Xml` with a `.lbrn2` extension and open it in LightBurn.
+Save the result with a `.lbrn2` extension and open it in LightBurn.
 
-## How it works
+Each cut setting returns an index. Shapes use that index to pick their layer. The package keeps cut settings in the order you add them. It does not remove duplicates. Each shape is placed with a matrix, which is LightBurn's own `<XForm>` format.
 
-1. **Register cut settings.** `addCutSetting` / `addImageCutSetting` each
-   return the index that shapes reference. Settings are kept in the order
-   added, with no deduplication or reordering — that's up to the caller.
-2. **Add shapes**, each placed by a raw affine matrix (LightBurn's
-   `<XForm>`).
-3. **Serialize** with `toXml()`.
-
-## API
-
-### `createLbrn2Project()`
-
-Returns a builder with these methods:
-
-| Method                                                      | Description                                     |
-| ----------------------------------------------------------- | ----------------------------------------------- |
-| `addCutSetting({ name, type, maxPower, speed })`            | Vector layer; `type` is `'Cut'` or `'Scan'`.    |
-| `addImageCutSetting({ name?, maxPower?, speed?, ditherMode? })` | Image layer (defaults: `Image`, 20, 100, `stucki`). |
-| `addRect(cutIndex, m, width, height, cornerRadius)`         | Rectangle centered on the origin of `m`.        |
-| `addEllipse(cutIndex, m, radiusX, radiusY)`                 | Ellipse centered on the origin of `m`.          |
-| `addPath(cutIndex, m, points)`                              | Polyline from `[x0, y0, x1, y1, …]`.            |
-| `addText(cutIndex, m, text, font, fontSizeMm, options?)`    | Text; options: `letterSpacing`, `lineSpacing`, `align`. |
-| `addBitmap(cutIndex, m, widthMm, heightMm, base64)`         | Embedded PNG (base64, no `data:` prefix).       |
-| `toXml()`                                                   | Serialize to a `.lbrn2` XML string.             |
-
-### Matrix helpers
-
-`Mat` is a row-major affine matrix `[a, b, c, d, tx, ty]`.
-
-| Export                  | Description                                    |
-| ----------------------- | ---------------------------------------------- |
-| `IDENTITY`              | No translation, rotation, or scale.            |
-| `multiply(m, n)`        | Applies `n` first, then `m`.                   |
-| `translation(tx, ty)`   | Translate, in mm.                              |
-| `rotation(deg)`         | Rotate clockwise around the origin.            |
-| `flipYMatrix(height)`   | Flip a Y-down coordinate space to Y-up.        |
-| `applyToPoint(m, x, y)` | Transform a point.                             |
-
-### Template substitution
-
-Work directly on the raw XML string of an existing `.lbrn2` file (they are
-plain XML, not ZIP archives).
-
-| Function                                       | Description                                                       |
-| ---------------------------------------------- | ----------------------------------------------------------------- |
-| `assertLbrn2Format(xml)`                       | Throws a descriptive error unless the root is `<LightBurnProject>`. |
-| `extractLbrn2Tokens(xml)`                      | Returns the unique `{{token}}` names found.                       |
-| `renderLbrn2File(xml, variables, values)`      | Replaces tokens; falls back to `defaultValue`, then `''`.         |
+To fill in an existing template, use the three template functions:
 
 ```ts
 import {
@@ -102,7 +66,7 @@ import {
 
 const xml: string = await fetch('/templates/name-tag.lbrn2').then((r) => r.text());
 
-assertLbrn2Format(xml); // throws if invalid
+assertLbrn2Format(xml); // throws if the file is not a .lbrn2 file
 
 const tokens: string[] = extractLbrn2Tokens(xml); // e.g. ['FirstName', 'LastName']
 
@@ -113,22 +77,21 @@ const output: string = renderLbrn2File(
 );
 ```
 
-`renderLbrn2File` is plain text substitution, not XML-aware. LightBurn
-re-renders its own fonts from stored text, so there is no glyph outline
-data to regenerate. `assertLbrn2Format` is a structural sniff, not full
-XML validation.
+### Examples
 
-### Lower-level exports
+See [EXAMPLES.md](./EXAMPLES.md) for more examples. They cover moving and turning shapes, using many layers, adding images, and filling in templates.
 
-`rectShape`, `ellipseShape`, `pathShape`, `textShape`, `bitmapShape`
-(each taking a pre-composed `Mat`), plus `escapeXml`, `fmt`, and `xform`,
-are exported for callers who want to assemble XML themselves.
+[Back to Top](#table-of-contents)
 
-## Examples
+## API Reference
 
-See [EXAMPLES.md](./EXAMPLES.md).
+See [API.md](./API.md) for every function, with tables for the project builder, the matrix helpers, and the template functions.
+
+[Back to Top](#table-of-contents)
 
 ## Development
+
+Install the packages, then run the checks:
 
 ```sh
 bun install
@@ -137,19 +100,26 @@ bun run test
 bun run build
 ```
 
-## License
+[Back to Top](#table-of-contents)
 
-Apache-2.0 — see [LICENSE](./LICENSE).
+## Buy Me a Coffee
 
-## Support
-
-If this library saved you some reverse-engineering, consider buying me a
-coffee. ☕
+If this app, code, or repository has helped you or someone you know, please consider donating. I appreciate any help to offset the costs of development and/or AI Credits.
 
 [**Donate via Stripe**](https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800), or scan:
 
 [![Donate via Stripe](./donate.svg)](https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800)
 
+[Back to Top](#table-of-contents)
+
+## License
+
+Apache 2
+
+[Back to Top](#table-of-contents)
+
 ## Copyright
 
 (c)2026 Richard McQuiston. All rights reserved.
+
+[Back to Top](#table-of-contents)
