@@ -1,6 +1,6 @@
 {
   "name": "@richardmcquiston01/unofficial-lb-writer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Unofficial framework-agnostic TypeScript library for writing LightBurn-compatible (.lbrn2) project files.",
   "license": "Apache-2.0",
   "author": "Richard McQuiston <richard.mcquiston01@gmail.com>",
@@ -22,7 +22,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "donate.svg", "CHANGELOG.md", "EXAMPLES.md"],
+  "files": ["dist", "donate.svg", "CHANGELOG.md", "EXAMPLES.md", "API.md"],
   "scripts": {
     "build": "tsup",
     "prepare": "tsup",

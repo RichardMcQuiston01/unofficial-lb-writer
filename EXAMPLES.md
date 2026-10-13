@@ -1,5 +1,9 @@
 # EXAMPLES
 
+[Back to README](./README.md)
+
+| [A minimal project: one rectangle](#a-minimal-project-one-rectangle) | [Placing and rotating a shape](#placing-and-rotating-a-shape) | [Multiple layers with different operations](#multiple-layers-with-different-operations) | [Embedding a bitmap](#embedding-a-bitmap) | [Filling in a template's `{{token}}` placeholders](#filling-in-a-templates-token-placeholders) |
+
 ## A minimal project: one rectangle
 
 ```ts
@@ -18,6 +22,8 @@ project.addRect(cutIndex, IDENTITY, 20, 10, 0);
 
 console.log(project.toXml());
 ```
+
+[Back to Top](#examples)
 
 ## Placing and rotating a shape
 
@@ -52,6 +58,8 @@ const m = multiply(
 project.addRect(cutIndex, m, width, height, 0);
 ```
 
+[Back to Top](#examples)
+
 ## Multiple layers with different operations
 
 Each call to `addCutSetting` appends a new `CutSetting` and returns its
@@ -84,6 +92,8 @@ project.addEllipse(cutIndex, IDENTITY, 15, 15);
 const xml = project.toXml();
 ```
 
+[Back to Top](#examples)
+
 ## Embedding a bitmap
 
 ```ts
@@ -97,6 +107,8 @@ project.addBitmap(imageIndex, IDENTITY, 100, 50, '...');
 
 const xml = project.toXml();
 ```
+
+[Back to Top](#examples)
 
 ## Filling in a template's `{{token}}` placeholders
 
@@ -129,3 +141,9 @@ const output = renderLbrn2File(
 );
 // output is the same XML with {{FirstName}} -> 'Jane', {{LastName}} -> 'Smith'
 ```
+
+[Back to Top](#examples)
+
+---
+
+[Back to README](./README.md)

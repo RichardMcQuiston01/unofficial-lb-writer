@@ -1,15 +1,26 @@
 # @richardmcquiston01/unofficial-lb-writer
 
+- Author: [Richard McQuiston](mailto:richard.mcquiston@gmail.com)
+- Website: https://richardmcquiston.com/
+
+## Table of Contents
+
+| [Overview](#overview) | [Getting Started](#getting-started) | [API Reference](#api-reference) | [Development](#development) | [Buy Me a Coffee](#buy-me-a-coffee) | [License](#license) | [Copyright](#copyright) |
+
 ## Overview
 
-Unofficial framework-agnostic TypeScript npm package for writing LightBurn-compatible files
+This is an unofficial TypeScript package that writes LightBurn project files (`.lbrn2`). LightBurn is software for laser cutters and engravers. This project is not tied to or endorsed by LightBurn Software.
+
+The package is a low-level writer. It knows nothing about your app's document model. You map your own data onto its builder. It has no runtime dependencies and works with any framework. It also fills in `{{token}}` placeholders in an existing `.lbrn2` file.
+
+[Back to Top](#table-of-contents)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 20+ or Bun 1.1+
-- A TypeScript or JavaScript project targeting ES2022+
+- Node.js 20 or newer, or Bun 1.1 or newer
+- A TypeScript or JavaScript project that targets ES2022 or newer
 
 ### Installation
 
@@ -17,14 +28,18 @@ Unofficial framework-agnostic TypeScript npm package for writing LightBurn-compa
 bun add @richardmcquiston01/unofficial-lb-writer
 ```
 
+You can also use `npm install @richardmcquiston01/unofficial-lb-writer`.
+
 ### Usage
+
+Create a project, add a cut setting, add a shape, and write the XML.
 
 ```ts
 import { createLbrn2Project, IDENTITY } from '@richardmcquiston01/unofficial-lb-writer';
 
 const project = createLbrn2Project();
 
-const cutIndex = project.addCutSetting({
+const cutIndex: number = project.addCutSetting({
   name: 'Cut',
   type: 'Cut',
   maxPower: 80,
@@ -33,16 +48,34 @@ const cutIndex = project.addCutSetting({
 
 project.addRect(cutIndex, IDENTITY, 20, 10, 0);
 
-const lbrn2Xml = project.toXml();
+const lbrn2Xml: string = project.toXml();
 ```
 
-`createLbrn2Project()` returns a builder that mirrors the shapes in a
-`.lbrn2` project: register `CutSetting`s with `addCutSetting`/
-`addImageCutSetting` (each call returns the index shapes should
-reference), add shapes with `addRect`/`addEllipse`/`addPath`/`addText`/
-`addBitmap`, then call `toXml()` to serialize. Shape placement uses
-LightBurn's own affine `<XForm>` matrices — compose one with the
-exported `multiply`/`translation`/`rotation`/`flipYMatrix` helpers.
+Save the result with a `.lbrn2` extension and open it in LightBurn.
+
+Each cut setting returns an index. Shapes use that index to pick their layer. The package keeps cut settings in the order you add them. It does not remove duplicates. Each shape is placed with a matrix, which is LightBurn's own `<XForm>` format.
+
+To fill in an existing template, use the three template functions:
+
+```ts
+import {
+  assertLbrn2Format,
+  extractLbrn2Tokens,
+  renderLbrn2File,
+} from '@richardmcquiston01/unofficial-lb-writer';
+
+const xml: string = await fetch('/templates/name-tag.lbrn2').then((r) => r.text());
+
+assertLbrn2Format(xml); // throws if the file is not a .lbrn2 file
+
+const tokens: string[] = extractLbrn2Tokens(xml); // e.g. ['FirstName', 'LastName']
+
+const output: string = renderLbrn2File(
+  xml,
+  [{ token: 'FirstName', defaultValue: 'Guest' }, { token: 'LastName' }],
+  { FirstName: 'Jane', LastName: 'Smith' }
+);
+```
 
 ### Reading and substituting into an existing `.lbrn2` file
 
@@ -74,20 +107,47 @@ regenerate when text changes.
 
 ### Examples
 
-See [EXAMPLES.md](./EXAMPLES.md)
+See [EXAMPLES.md](./EXAMPLES.md) for more examples. They cover moving and turning shapes, using many layers, adding images, and filling in templates.
 
-## License
+[Back to Top](#table-of-contents)
 
-APACHE 2 - See [LICENSE](./LICENSE)
+## API Reference
 
-## Support
+See [API.md](./API.md) for every function, with tables for the project builder, the matrix helpers, and the template functions.
 
-If this library saved you some reverse-engineering, consider buying me a coffee. ☕
+[Back to Top](#table-of-contents)
+
+## Development
+
+Install the packages, then run the checks:
+
+```sh
+bun install
+bun run typecheck
+bun run test
+bun run build
+```
+
+[Back to Top](#table-of-contents)
+
+## Buy Me a Coffee
+
+If this app, code, or repository has helped you or someone you know, please consider donating. I appreciate any help to offset the costs of development and/or AI Credits.
 
 [**Donate via Stripe**](https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800), or scan:
 
 [![Donate via Stripe](./donate.svg)](https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800)
 
+[Back to Top](#table-of-contents)
+
+## License
+
+Apache 2
+
+[Back to Top](#table-of-contents)
+
 ## Copyright
 
 (c)2026 Richard McQuiston. All rights reserved.
+
+[Back to Top](#table-of-contents)
