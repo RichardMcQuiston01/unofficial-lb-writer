@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [Unreleased]
+
+### Changed
+
+- Rewrote `README.md`: feature summary, API tables for the builder, matrix
+  helpers, and template substitution, plus a development section.
+
 ## [0.2.0] - 2026-09-22
 
 ### Added
