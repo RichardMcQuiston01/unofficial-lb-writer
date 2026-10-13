@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [Unreleased]
+## [0.2.1] - 2026-10-13
 
 ### Changed
 
@@ -9,6 +9,8 @@
   and Copyright sections.
 - `EXAMPLES.md` now has Back to README links, a menu row, and Back to Top
   links.
+- `API.md` is now included in the published package so the README link
+  works on npm.
 
 ### Added
 
