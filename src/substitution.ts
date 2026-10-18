@@ -33,26 +33,50 @@ export function extractLbrn2Tokens(xmlContent: string): string[] {
   return Array.from(seen);
 }
 
+/** Escapes `text` for literal use inside a `RegExp`. */
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 /**
  * Substitutes `{{token}}` placeholders in a `.lbrn2` file's raw XML and
  * returns the modified content. Tokens with no matching entry in
  * `values` fall back to `variable.defaultValue`, or an empty string if
  * no default is set.
  *
- * This is plain text substitution, not XML-aware -- LightBurn re-renders
- * its own fonts from whatever text is stored, so (unlike xTool Studio)
- * there's no glyph outline data to regenerate when text changes.
+ * Replacement is a single pass and values are inserted literally: `$&`,
+ * `$'`, `` $` `` and `$$` are not expanded, and text inserted for one
+ * variable is never scanned for another variable's placeholder. Variables
+ * with an empty token are ignored; placeholders with no matching variable
+ * are left as they are.
+ *
+ * This is plain text substitution, not XML-aware -- values are inserted
+ * as-is, so callers must escape them (see `escapeXml`) if they may contain
+ * `&`, `<`, `>`, or `"`. LightBurn re-renders its own fonts from whatever
+ * text is stored, so (unlike xTool Studio) there's no glyph outline data
+ * to regenerate when text changes.
  */
 export function renderLbrn2File(
   xmlContent: string,
   variables: Lbrn2Variable[],
   values: Record<string, string>
 ): string {
-  let result = xmlContent;
+  const replacementByPlaceholder = new Map<string, string>();
   for (const variable of variables) {
-    const replacement = values[variable.token] ?? variable.defaultValue ?? '';
-    const escapedToken = variable.token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    result = result.replace(new RegExp(`\\{\\{${escapedToken}\\}\\}`, 'g'), replacement);
+    if (!variable.token) continue;
+    replacementByPlaceholder.set(
+      `{{${variable.token}}}`,
+      values[variable.token] ?? variable.defaultValue ?? ''
+    );
   }
-  return result;
+  if (replacementByPlaceholder.size === 0) return xmlContent;
+
+  const pattern = new RegExp(
+    Array.from(replacementByPlaceholder.keys()).map(escapeRegExp).join('|'),
+    'g'
+  );
+  return xmlContent.replace(
+    pattern,
+    (placeholder) => replacementByPlaceholder.get(placeholder) ?? placeholder
+  );
 }

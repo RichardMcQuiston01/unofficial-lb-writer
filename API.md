@@ -46,9 +46,9 @@ These work on the raw XML text of an existing `.lbrn2` file. A `.lbrn2` file is 
 | ----------------------------------------- | -------------------------------------------------------------- |
 | `assertLbrn2Format(xml)`                  | Throws an error unless the root element is `<LightBurnProject>`. |
 | `extractLbrn2Tokens(xml)`                 | Returns each `{{token}}` name found, once.                     |
-| `renderLbrn2File(xml, variables, values)` | Replaces tokens. Uses `defaultValue` first, then an empty string. |
+| `renderLbrn2File(xml, variables, values)` | Replaces tokens in one pass, inserting values literally. Uses the value you pass, then `defaultValue`, then an empty string. |
 
-`renderLbrn2File` swaps plain text. It does not parse the XML. LightBurn draws its own fonts from the stored text, so there is no outline data to rebuild. `assertLbrn2Format` is a quick check of the root element. It is not full XML validation.
+`renderLbrn2File` swaps plain text. It does not parse the XML or escape values, so pass values through `escapeXml` first if they may contain `&`, `<`, `>`, or `"`. LightBurn draws its own fonts from the stored text, so there is no outline data to rebuild. `assertLbrn2Format` is a quick check of the root element. It is not full XML validation.
 
 [Back to Top](#api-reference)
 
