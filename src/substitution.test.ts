@@ -86,4 +86,27 @@ describe('renderLbrn2File', () => {
     expect(output).toContain('AppVersion="1.0.00"');
     expect(output).toContain('{{LastName}}');
   });
+
+  it('inserts $ replacement patterns literally', () => {
+    const output = renderLbrn2File('a {{n}} b', [{ token: 'n' }], { n: "$' $$ $& $`" });
+    expect(output).toBe("a $' $$ $& $` b");
+  });
+
+  it('does not scan inserted values for later tokens', () => {
+    const output = renderLbrn2File(
+      '{{a}}|{{b}}',
+      [{ token: 'a' }, { token: 'b' }],
+      { a: 'see {{b}}', b: 'SECRET' }
+    );
+    expect(output).toBe('see {{b}}|SECRET');
+  });
+
+  it('ignores variables with an empty token', () => {
+    const output = renderLbrn2File('{{}} {{x}}', [{ token: '' }, { token: 'x', defaultValue: 'X' }], {});
+    expect(output).toBe('{{}} X');
+  });
+
+  it('leaves placeholders with no matching variable untouched', () => {
+    expect(renderLbrn2File('{{a}} {{z}}', [{ token: 'a' }], { a: '1' })).toBe('1 {{z}}');
+  });
 });

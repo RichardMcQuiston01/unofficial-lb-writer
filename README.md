@@ -105,6 +105,11 @@ on the raw XML -- LightBurn re-renders its own fonts from stored text, so
 unlike xTool Studio's `.xcs`/`.xs` there's no glyph outline data to
 regenerate when text changes.
 
+Values are inserted literally in a single pass: `$` sequences are not
+expanded, and a value that contains another variable's `{{token}}` is not
+substituted again. Values are not XML-escaped, so run them through
+`escapeXml` first if they may contain `&`, `<`, `>`, or `"`.
+
 ### Examples
 
 See [EXAMPLES.md](./EXAMPLES.md) for more examples. They cover moving and turning shapes, using many layers, adding images, and filling in templates.
