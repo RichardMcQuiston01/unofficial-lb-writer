@@ -77,6 +77,39 @@ const output: string = renderLbrn2File(
 );
 ```
 
+### Reading and substituting into an existing `.lbrn2` file
+
+```ts
+import {
+  assertLbrn2Format,
+  extractLbrn2Tokens,
+  renderLbrn2File,
+} from '@richardmcquiston01/unofficial-lb-writer';
+
+const xml = await fetch('/templates/name-tag.lbrn2').then((r) => r.text());
+
+assertLbrn2Format(xml); // throws if invalid
+
+const tokens = extractLbrn2Tokens(xml); // e.g. ['FirstName', 'LastName']
+
+const output = renderLbrn2File(
+  xml,
+  [{ token: 'FirstName', defaultValue: 'Guest' }, { token: 'LastName' }],
+  { FirstName: 'Jane', LastName: 'Smith' }
+);
+```
+
+`.lbrn2` files are plain XML text (not a ZIP archive), so these functions
+work directly on strings. `renderLbrn2File` does plain text substitution
+on the raw XML -- LightBurn re-renders its own fonts from stored text, so
+unlike xTool Studio's `.xcs`/`.xs` there's no glyph outline data to
+regenerate when text changes.
+
+Values are inserted literally in a single pass: `$` sequences are not
+expanded, and a value that contains another variable's `{{token}}` is not
+substituted again. Values are not XML-escaped, so run them through
+`escapeXml` first if they may contain `&`, `<`, `>`, or `"`.
+
 ### Examples
 
 See [EXAMPLES.md](./EXAMPLES.md) for more examples. They cover moving and turning shapes, using many layers, adding images, and filling in templates.

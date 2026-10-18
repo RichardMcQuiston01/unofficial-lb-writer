@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `renderLbrn2File` now substitutes in a single pass and inserts values
+  literally. Previously `$&`, `$'`, `` $` `` and `$$` in a value were
+  expanded as `String.prototype.replace` patterns (so `$'` copied the rest
+  of the file into the output), and a value inserted for one variable was
+  scanned again for later variables' `{{token}}` placeholders. Variables
+  with an empty token are now ignored.
+
+### Changed
+
+- Documented that `renderLbrn2File` does not XML-escape values; callers
+  should pass them through `escapeXml` first when they may contain `&`,
+  `<`, `>`, or `"`.
+
+## [0.2.1] - 2026-10-13
+
 ### Changed
 
 - Rewrote `README.md` to the standard template: author block, Table of
@@ -9,6 +26,8 @@
   and Copyright sections.
 - `EXAMPLES.md` now has Back to README links, a menu row, and Back to Top
   links.
+- `API.md` is now included in the published package so the README link
+  works on npm.
 
 ### Added
 
