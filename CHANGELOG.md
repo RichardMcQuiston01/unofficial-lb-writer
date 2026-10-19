@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-10-19
+
+### Added
+
+- `funding` field in `package.json` so `npm fund` and the npm page show the donate link.
+
 ## [0.2.2] - 2026-10-18
 
 ### Fixed
