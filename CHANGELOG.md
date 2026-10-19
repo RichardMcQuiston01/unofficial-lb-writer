@@ -6,6 +6,8 @@
 
 - `funding` field in `package.json` so `npm fund` and the npm page show the donate link.
 
+## [0.2.2] - 2026-10-18
+
 ### Fixed
 
 - `renderLbrn2File` now substitutes in a single pass and inserts values
