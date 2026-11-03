@@ -22,7 +22,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "donate.svg", "CHANGELOG.md", "EXAMPLES.md", "API.md"],
+  "files": ["dist", "donate.png", "CHANGELOG.md", "EXAMPLES.md", "API.md"],
   "scripts": {
     "build": "tsup",
     "prepare": "tsup",
@@ -35,5 +35,9 @@
     "tsup": "^8",
     "typescript": "^5",
     "vitest": "^2"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://www.paypal.com/ncp/payment/BGTZ6GYWUTPYG"
   }
 }
