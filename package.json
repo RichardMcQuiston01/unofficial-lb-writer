@@ -39,9 +39,5 @@
     "tsup": "^8",
     "typescript": "^5",
     "vitest": "^2"
-  },
-  "funding": {
-    "type": "individual",
-    "url": "https://ko-fi.com/P1V529Z7ZP"
   }
 }
