@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-03
+
+### Changed
+
+- Donate links and the `funding` entry now point to PayPal, and the README donate QR image is 180 px wide.
+- Documented that `renderLbrn2File` does not XML-escape values; callers
+  should pass them through `escapeXml` first when they may contain `&`,
+  `<`, `>`, or `"`.
+
 ### Fixed
 
 - `renderLbrn2File` now substitutes in a single pass and inserts values
@@ -11,6 +20,7 @@
   scanned again for later variables' `{{token}}` placeholders. Variables
   with an empty token are now ignored.
 
+=======
 ### Changed
 
 - Donations now point at Ko-fi instead of PayPal: the README badge, the
