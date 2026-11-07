@@ -2,14 +2,21 @@
 
 ## [Unreleased]
 
-## [0.2.2] - 2026-11-03
+## [0.2.4] - 2026-11-07
 
 ### Changed
 
-- Donate links and the `funding` entry now point to PayPal, and the README donate QR image is 180 px wide.
-- Documented that `renderLbrn2File` does not XML-escape values; callers
-  should pass them through `escapeXml` first when they may contain `&`,
-  `<`, `>`, or `"`.
+- Donations now point at Ko-fi instead of the closed Stripe page: the README
+  badge, the `package.json` `funding` link and a new `.github/FUNDING.yml`.
+  The QR image is removed. No library code changed.
+
+## [0.2.3] - 2026-10-19
+
+### Added
+
+- `funding` field in `package.json` so `npm fund` and the npm page show the donate link.
+
+## [0.2.2] - 2026-10-18
 
 ### Fixed
 
@@ -20,12 +27,8 @@
   scanned again for later variables' `{{token}}` placeholders. Variables
   with an empty token are now ignored.
 
-=======
 ### Changed
 
-- Donations now point at Ko-fi instead of PayPal: the README badge, the
-  `package.json` funding link and a new `.github/FUNDING.yml`. The PayPal QR
-  image is removed from the repository and from the published files.
 - Documented that `renderLbrn2File` does not XML-escape values; callers
   should pass them through `escapeXml` first when they may contain `&`,
   `<`, `>`, or `"`.

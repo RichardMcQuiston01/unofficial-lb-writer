@@ -1,6 +1,6 @@
 {
   "name": "@richardmcquiston01/unofficial-lb-writer",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "Unofficial framework-agnostic TypeScript library for writing LightBurn-compatible (.lbrn2) project files.",
   "license": "Apache-2.0",
   "author": "Richard McQuiston <richard.mcquiston01@gmail.com>",
@@ -9,6 +9,10 @@
     "url": "https://github.com/RichardMcQuiston01/unofficial-lb-writer.git"
   },
   "homepage": "https://github.com/RichardMcQuiston01/unofficial-lb-writer#readme",
+  "funding": {
+    "type": "individual",
+    "url": "https://ko-fi.com/P1V529Z7ZP"
+  },
   "bugs": "https://github.com/RichardMcQuiston01/unofficial-lb-writer/issues",
   "keywords": ["lightburn", "lbrn2", "laser", "cnc"],
   "type": "module",
@@ -35,9 +39,5 @@
     "tsup": "^8",
     "typescript": "^5",
     "vitest": "^2"
-  },
-  "funding": {
-    "type": "individual",
-    "url": "https://ko-fi.com/P1V529Z7ZP"
   }
 }
