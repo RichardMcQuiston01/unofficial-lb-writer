@@ -20,6 +20,16 @@
   scanned again for later variables' `{{token}}` placeholders. Variables
   with an empty token are now ignored.
 
+=======
+### Changed
+
+- Donations now point at Ko-fi instead of PayPal: the README badge, the
+  `package.json` funding link and a new `.github/FUNDING.yml`. The PayPal QR
+  image is removed from the repository and from the published files.
+- Documented that `renderLbrn2File` does not XML-escape values; callers
+  should pass them through `escapeXml` first when they may contain `&`,
+  `<`, `>`, or `"`.
+
 ## [0.2.1] - 2026-10-13
 
 ### Changed

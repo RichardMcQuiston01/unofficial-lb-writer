@@ -22,7 +22,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "donate.png", "CHANGELOG.md", "EXAMPLES.md", "API.md"],
+  "files": ["dist", "CHANGELOG.md", "EXAMPLES.md", "API.md"],
   "scripts": {
     "build": "tsup",
     "prepare": "tsup",
@@ -38,6 +38,6 @@
   },
   "funding": {
     "type": "individual",
-    "url": "https://www.paypal.com/ncp/payment/BGTZ6GYWUTPYG"
+    "url": "https://ko-fi.com/P1V529Z7ZP"
   }
 }
