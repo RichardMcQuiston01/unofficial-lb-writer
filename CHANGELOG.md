@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-11-07
+
+### Changed
+
+- Donations now point at Ko-fi instead of the closed Stripe page: the README
+  badge, the `package.json` `funding` link and a new `.github/FUNDING.yml`.
+  The QR image is removed. No library code changed.
+
 ## [0.2.3] - 2026-10-19
 
 ### Added
